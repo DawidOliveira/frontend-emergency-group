@@ -1,6 +1,9 @@
-# emergency_group
+# Emergency Group App FrontEnd
 
-A new Flutter project.
+## Sobre o projeto
+Emergency Group é um aplicativo mobile que consiste em reunir um grupo de pessoas (familiares, amigos, etc.) com o objetivo de notificar a todos sempre que um estiver em situação de risco.
+
+### A new Flutter project.
 
 ## Getting Started
 
