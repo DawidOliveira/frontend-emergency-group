@@ -61,6 +61,7 @@ class _SignupPageState extends ModularState<SignupPage, SignupController> {
                         ),
                         TextFormFieldWidget(
                           onChanged: controller.setFullname,
+                          textCapitalization: TextCapitalization.words,
                           value: controller.fullname,
                           hintText: 'Nome completo',
                           keyboardType: TextInputType.name,

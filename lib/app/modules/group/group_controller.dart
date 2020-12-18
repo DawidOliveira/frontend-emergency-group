@@ -79,11 +79,12 @@ abstract class _GroupControllerBase with Store {
   Future sendNotification() async {
     String local = await getCurrentUserLocation();
     users.forEach((userData) async {
-      await _authRepository.sendNotification(
-        fullname: user.fullname,
-        smartphoneToken: userData.androidToken,
-        local: local,
-      );
+      if (userData.id != user.id)
+        await _authRepository.sendNotification(
+          fullname: user.fullname,
+          smartphoneToken: userData.androidToken,
+          local: local,
+        );
     });
   }
 

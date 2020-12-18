@@ -26,6 +26,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
         content: TextFormField(
           onChanged: controller.setName,
           initialValue: controller.name,
+          textCapitalization: TextCapitalization.sentences,
           decoration: InputDecoration(
             hintText: 'Digite o nome do seu grupo...',
           ),

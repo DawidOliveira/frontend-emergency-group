@@ -6,6 +6,7 @@ class TextFormFieldWidget extends StatelessWidget {
   final String hintText;
   final String value;
   final Function(String) onChanged;
+  final TextCapitalization textCapitalization;
 
   const TextFormFieldWidget({
     Key key,
@@ -14,11 +15,13 @@ class TextFormFieldWidget extends StatelessWidget {
     @required this.hintText,
     @required this.value,
     @required this.onChanged,
+    this.textCapitalization = TextCapitalization.none,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      textCapitalization: textCapitalization,
       autocorrect: autocorrect,
       keyboardType: keyboardType,
       onChanged: onChanged,
