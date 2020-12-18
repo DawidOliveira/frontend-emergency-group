@@ -3,6 +3,7 @@ import 'package:emergency_group/app/shared/auth/auth_local_storage.dart';
 import 'package:emergency_group/app/shared/auth/auth_repository.dart';
 import 'package:emergency_group/app/shared/group/GroupRepository.dart';
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -76,12 +77,19 @@ abstract class _GroupControllerBase with Store {
   }
 
   Future sendNotification() async {
+    String local = await getCurrentUserLocation();
     users.forEach((userData) async {
       await _authRepository.sendNotification(
         fullname: user.fullname,
         smartphoneToken: userData.androidToken,
+        local: local,
       );
     });
+  }
+
+  Future<String> getCurrentUserLocation() async {
+    final locData = await Location().getLocation();
+    return "https://www.google.com/maps/place/${locData.latitude},${locData.longitude}";
   }
 
   Future deleteGroup({int groupId}) async {

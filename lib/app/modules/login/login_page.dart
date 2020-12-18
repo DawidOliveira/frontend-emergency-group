@@ -63,9 +63,7 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
                         ),
                         ButtonGradientWidget(
                           fn: () async {
-                            controller.setIsLoading(true);
                             await controller.login(context);
-                            controller.setIsLoading(false);
                           },
                           text: 'Acessar',
                           controller: controller,

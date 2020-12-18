@@ -36,6 +36,7 @@ abstract class _LoginControllerBase with Store {
 
   @action
   Future<void> login(BuildContext context) async {
+    isLoading = true;
     if (email == null ||
         password == null ||
         email.isEmpty ||
@@ -47,6 +48,8 @@ abstract class _LoginControllerBase with Store {
           duration: Duration(seconds: 2),
         ),
       );
+      isLoading = false;
+
       return;
     }
     _authRepository
@@ -57,15 +60,19 @@ abstract class _LoginControllerBase with Store {
         .then((_) {
       email = '';
       password = '';
+      isLoading = false;
+
       Modular.to.pushReplacementNamed('/home');
     }).catchError((err) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('$err'),
+          content: Text('Email e/ou senha incorretos!'),
           backgroundColor: Colors.red,
           duration: Duration(seconds: 2),
         ),
       );
+      isLoading = false;
+
       return;
     });
   }

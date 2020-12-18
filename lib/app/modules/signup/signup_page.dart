@@ -88,9 +88,7 @@ class _SignupPageState extends ModularState<SignupPage, SignupController> {
                         ),
                         ButtonGradientWidget(
                           fn: () async {
-                            controller.setIsLoading(true);
                             controller.signup(context);
-                            controller.setIsLoading(false);
                           },
                           text: 'Cadastrar',
                           controller: controller,

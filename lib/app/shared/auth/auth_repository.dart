@@ -18,17 +18,6 @@ class AuthRepository implements IAuthRepository {
 
   @override
   Future signin({String email, String password}) async {
-    _fcm.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-      },
-    );
     String androidToken = await _fcm.getToken();
     final response = await dio.post('/login',
         data: jsonEncode({
@@ -66,20 +55,22 @@ class AuthRepository implements IAuthRepository {
     );
   }
 
-  Future sendNotification({String smartphoneToken, String fullname}) async {
+  Future sendNotification(
+      {String smartphoneToken, String fullname, String local}) async {
     await Dio().post('https://fcm.googleapis.com/fcm/send',
         data: {
           "notification": {
-            "body": "$fullname precisa de ajuda agora!!!!",
-            "title": "Alerta!!!"
+            "body":
+                "$fullname precisa de ajuda agora!!!!\nLink para verificar localização: $local",
+            "title": "Alerta!!!",
           },
           "priority": "high",
           "data": {
-            "clickaction": "FLUTTERNOTIFICATIONCLICK",
+            "clickaction": "FLUTTER_NOTIFICATION_CLICK",
             "id": "1",
             "status": "done"
           },
-          "to": smartphoneToken
+          "to": smartphoneToken,
         },
         options: Options(headers: {
           'Authorization':

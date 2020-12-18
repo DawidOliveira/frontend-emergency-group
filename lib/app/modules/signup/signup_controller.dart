@@ -40,6 +40,8 @@ abstract class _SignupControllerBase with Store {
   void setFullname(String value) => fullname = value;
 
   Future<void> signup(BuildContext context) async {
+    isLoading = true;
+
     if (email == null ||
         password == null ||
         fullname == null ||
@@ -55,6 +57,8 @@ abstract class _SignupControllerBase with Store {
           duration: Duration(seconds: 2),
         ),
       );
+      isLoading = false;
+
       return;
     }
     _authRepository
@@ -69,6 +73,8 @@ abstract class _SignupControllerBase with Store {
       password = '';
       username = '';
       fullname = '';
+      isLoading = false;
+
       Modular.to.popUntil((route) => route.isFirst);
       Modular.to.pushReplacementNamed('/home');
     }).catchError((err) {
@@ -79,6 +85,8 @@ abstract class _SignupControllerBase with Store {
           duration: Duration(seconds: 2),
         ),
       );
+      isLoading = false;
+
       return;
     });
   }

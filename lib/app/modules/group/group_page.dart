@@ -1,6 +1,5 @@
 import 'package:emergency_group/app/models/group.dart';
 import 'package:emergency_group/app/models/user.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -37,27 +36,45 @@ class _GroupPageState extends ModularState<GroupPage, GroupController> {
               if (value == 'removeGroup')
                 controller.deleteGroup(groupId: _group.id);
               if (value == 'addUser') _showContainer(context);
+              if (value == 'exitGroup')
+                controller.removeUserGroup(
+                  groupId: _group.id,
+                  userId: controller.user.id,
+                );
             },
             itemBuilder: (context) => <PopupMenuEntry<String>>[
-              PopupMenuItem(
-                value: 'removeGroup',
-                child: ListTile(
-                  leading: Icon(
-                    Icons.delete,
-                    color: Colors.grey,
+              if (controller.user.id == _group.ownerId)
+                PopupMenuItem(
+                  value: 'removeGroup',
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.delete,
+                      color: Colors.grey,
+                    ),
+                    title: Text('Apagar grupo'),
                   ),
-                  title: Text('Apagar grupo'),
                 ),
-              ),
-              PopupMenuDivider(),
-              PopupMenuItem(
-                value: 'addUser',
-                child: ListTile(
+              if (controller.user.id == _group.ownerId) PopupMenuDivider(),
+              if (controller.user.id == _group.ownerId)
+                PopupMenuItem(
+                  value: 'addUser',
+                  child: ListTile(
                     leading: Icon(
                       Icons.person_add,
                       color: Colors.grey,
                     ),
-                    title: Text('Adicionar usuário')),
+                    title: Text('Adicionar usuário'),
+                  ),
+                ),
+              PopupMenuItem(
+                value: 'exitGroup',
+                child: ListTile(
+                  leading: Icon(
+                    Icons.exit_to_app,
+                    color: Colors.grey,
+                  ),
+                  title: Text('Sair do grupo'),
+                ),
               ),
             ],
           )

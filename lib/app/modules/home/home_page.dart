@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'home_controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,6 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends ModularState<HomePage, HomeController> {
   //use 'controller' variable to access controller
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _fcm = FirebaseMessaging();
 
   _showContainer(BuildContext ctx) {
     showDialog(
@@ -46,6 +49,52 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
           ),
         ],
       ),
+    );
+  }
+
+  _showMessage(Map<String, dynamic> message) {
+    final url =
+        message['notification']['body'].toString().split(" ").last.toString();
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(message['notification']['title']),
+            actions: [
+              FlatButton(
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancelar'),
+              ),
+              FlatButton(
+                onPressed: () async {
+                  if (await canLaunch(url))
+                    await launch(url);
+                  else
+                    throw 'Não pode ser aberto este link';
+                },
+                child: Text('Abrir no maps'),
+              ),
+            ],
+            content: Text(message['notification']['body']),
+          );
+        });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        _showMessage(message);
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        _showMessage(message);
+      },
+      onResume: (Map<String, dynamic> message) async {
+        _showMessage(message);
+      },
     );
   }
 
