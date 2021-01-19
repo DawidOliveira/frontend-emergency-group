@@ -109,6 +109,7 @@ class _SignupPageState extends ModularState<SignupPage, SignupController> {
                       Text('Já tem uma conta?'),
                       FlatButton(
                         onPressed: () {
+                          Modular.to.popUntil((route) => route.isFirst);
                           Navigator.of(context).pushReplacementNamed('/login');
                         },
                         child: Text(
